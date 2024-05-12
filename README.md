@@ -1,2 +1,1 @@
-# Desafio
-La lesera de Ionic (prueba 2)
+# Este es mi Repositorio para pygame General... el inicio de mi ambicion
