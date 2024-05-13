@@ -1,4 +1,7 @@
 import pygame, sys
+from scripts.entities import PhisicsEntity
+from scripts.utils import load_image
+
 
 
 class Game:
@@ -11,26 +14,36 @@ class Game:
 
         self.clock = pygame.time.Clock() #clock es para limitar el ratio de fps
 
-        self.img = pygame.image.load('data/images/clouds/cloud_1.png')
-        self.img.set_colorkey((0, 0, 0)) #Elimina los sobrantes del png
+        # Nube 
+        # self.img = pygame.image.load('data/images/clouds/cloud_1.png')
+        # self.img.set_colorkey((0, 0, 0)) #Elimina los sobrantes del png
 
-        self.img_pos = [160,260]
+        # self.img_pos = [160,260]
         self.mvmnt = [False, False] #Variable de movimiento
 
-        self.clsn_area = pygame.Rect(50, 50, 300, 50)
+        # self.clsn_area = pygame.Rect(50, 50, 300, 50)
 
+        self.assets = {
+            'player': load_image('entities/player.png')
+        }
+
+        self.player = PhisicsEntity(self, 'player', (50,50), (8, 15))
 
     def run(self):
         while True:
             self.screen.fill((14, 219, 248)) #fill() nos pinta la pantalla con un color (RGB), tambien evita las nubes repetidas
-            self.img_pos[1] += (self.mvmnt[1] - self.mvmnt[0])*5
-            self.screen.blit(self.img, self.img_pos)
+            # Nube movimiento eje Y
+            # self.img_pos[1] += (self.mvmnt[1] - self.mvmnt[0])*5
+            # self.screen.blit(self.img, self.img_pos)
 
-            img_r = pygame.Rect(self.img_pos[0], self.img_pos[1], self.img.get_width(), self.img.get_height())
-            # if img_r.colliderect(self.clsn_area):
-            #     pygame.draw.rect(self.screen, (0, 100, 255), self.clsn_area)
-            # else:
-            #     pygame.draw.rect(self.screen, (0, 50, 155), self.clsn_area)
+            # img_r = pygame.Rect(self.img_pos[0], self.img_pos[1], self.img.get_width(), self.img.get_height())
+            # # if img_r.colliderect(self.clsn_area):
+            # #     pygame.draw.rect(self.screen, (0, 100, 255), self.clsn_area)
+            # # else:
+            # #     pygame.draw.rect(self.screen, (0, 50, 155), self.clsn_area)
+
+            self.player.update((self.mvmnt[1] - self.mvmnt[0], 0))
+            self.player.render(self.screen)
 
             for event in pygame.event.get(): #Capturamos el input de la Ventana de lo contrario el SO pensará que la ventana no responde
                 if event.type == pygame.QUIT: #Para cerrar la ventana... literalmente la "X" de la parte superior derecha 
@@ -38,17 +51,28 @@ class Game:
                     sys.exit()
 
                 # Moviemiento (eje y)
+                # if event.type == pygame.KEYDOWN: # Aqui le Decimos si detecta que se pulse una tecla hacia abajo
+                #     if event.key == pygame.K_UP:
+                #         self.mvmnt[0] = True
+                #     if event.key == pygame.K_DOWN:
+                #         self.mvmnt[1] = True
+                # if event.type == pygame.KEYUP: # Aqui le Decimos si detecta que se pulse una tecla arriba
+                #     if event.key == pygame.K_UP:
+                #         self.mvmnt[0] = False
+                #     if event.key == pygame.K_DOWN:
+                #         self.mvmnt[1] = False
+
+                # Moviemiento (eje x)
                 if event.type == pygame.KEYDOWN: # Aqui le Decimos si detecta que se pulse una tecla hacia abajo
-                    if event.key == pygame.K_UP:
+                    if event.key == pygame.K_LEFT:
                         self.mvmnt[0] = True
-                    if event.key == pygame.K_DOWN:
+                    if event.key == pygame.K_RIGHT:
                         self.mvmnt[1] = True
                 if event.type == pygame.KEYUP: # Aqui le Decimos si detecta que se pulse una tecla arriba
-                    if event.key == pygame.K_UP:
+                    if event.key == pygame.K_LEFT:
                         self.mvmnt[0] = False
-                    if event.key == pygame.K_DOWN:
+                    if event.key == pygame.K_RIGHT:
                         self.mvmnt[1] = False
-
                 # Movimiento (eje x)
                 # if event.type == pygame.KEY:
                 #     if event.key == pygame.K_LEFT:
